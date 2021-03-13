@@ -1,0 +1,40 @@
+{
+  "name": "osrs_merch_search",
+  "version": "1.0.0",
+  "description": "Browse and Filter OSRS Items by Their Live GE Prices. Data provided by RuneLite",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/LoganMcnulty/osrsMerchSearch.git"
+  },
+  "keywords": [
+    "osrs",
+    "old",
+    "school",
+    "runescape",
+    "merchanting",
+    "merch",
+    "merchanting",
+    "RuneLite",
+    "API",
+    "grand",
+    "exchange",
+    "GE"
+  ],
+  "author": "Logan McNulty",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LoganMcnulty/osrsMerchSearch/issues"
+  },
+  "homepage": "https://github.com/LoganMcnulty/osrsMerchSearch#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.0",
+    "node-fetch": "^2.6.1"
+  }
+}
