@@ -1,7 +1,10 @@
+const e = require("express");
 const fetch = require("node-fetch");
 const apiPath = 'https://api.osrsbox.com/items'
 const db = require("../../models");
 const pageCount = 965
+// const pageCount = 3
+
 
 const cleanDataFunc = (arr) => {
     let result = [];
@@ -18,7 +21,15 @@ const cleanDataFunc = (arr) => {
                 wiki_url: currItem.wiki_url
             }
         }
-        result.push(newItem)
+
+        if ((newItem.stats.tradeable == undefined) || (newItem.stats.tradeable === false || (newItem.stats.tradeable === 'false'))){
+            // console.log('untradeable item' + ' ' + newItem.name + ' ' + newItem.tradeable )
+            continue
+        }
+        else{
+            console.log('pushing item')
+            result.push(newItem)
+        }
     }
     return result;
   };
@@ -38,8 +49,6 @@ const pullItems = () => {
     Promise.all(requests)
     .then(responses => responses)
     .then(responses => Promise.all(responses.map(r => r.json())))
-    // .then(responses => Promise.all(responses.map(r => r._items)))
-    // .then(data => data.forEach(console.log(data)))
     .then(data => data.map(d => d._items))
     .then(data => {
         for(let z=0; z < data.length; z++){
