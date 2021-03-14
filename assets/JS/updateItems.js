@@ -1,10 +1,7 @@
-const e = require("express");
 const fetch = require("node-fetch");
 const apiPath = 'https://api.osrsbox.com/items'
 const db = require("../../models");
 const pageCount = 965
-// const pageCount = 3
-
 
 const cleanDataFunc = (arr) => {
     let result = [];
@@ -27,14 +24,13 @@ const cleanDataFunc = (arr) => {
             continue
         }
         else{
-            console.log('pushing item')
             result.push(newItem)
         }
     }
     return result;
   };
 
-const pullItems = () => {
+const updateItems = () => {
     console.log("Pulling Items from OSRS Box API");
     var numInserted = 0
 
@@ -51,15 +47,16 @@ const pullItems = () => {
     .then(responses => Promise.all(responses.map(r => r.json())))
     .then(data => data.map(d => d._items))
     .then(data => {
-        for(let z=0; z < data.length; z++){
+        let promiseLoop = () => { for(let z=0; z < data.length; z++){
             let cleanData = cleanDataFunc(data[z])
             numInserted += cleanData.length
             db.Item.insertMany(cleanData)
             .then(console.log('Item Data Inserted to DB'))
             .catch(err => console.log(err))
-        }
-        console.log(numInserted)
+        }}
+        Promise.all([promiseLoop()])
+        .then(console.log("All set. Num Inserted 👉 " + numInserted))
     })
 }
 
-module.exports = pullItems
+module.exports = updateItems

@@ -28,6 +28,30 @@ var itemStatsSchema = new Schema({
     type: String,
     required: false,
     unique:false,
+  },
+  highTime: {
+    type: Number,
+    required: false,
+    unique:false,
+    default:0
+  },
+  high: {
+    type: Number,
+    required: false,
+    unique:false,
+    default:0
+  },
+  low: {
+    type: Number,
+    required: false,
+    unique:false,
+    default:0
+  },
+  lowtime: {
+    type: Number,
+    required: false,
+    unique:false,
+    default:0
   }
 }, { _id : false })
 

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="Description" content="Enter your description here" />
     <link rel="stylesheet" href="../CSS/style.css">
-
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/66fb9cbaef.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
@@ -42,23 +42,23 @@
 
             <div class="row"><div class="col-12 bs-linebreak"><hr style="width:80%; height:3px"></div></div>
 
-            <h3 class='container bg-dark text-light col-xl-5 col-sm-12 12 p-2 my-1 rounded' >How it Works      
+            <h3 class='container bg-dark text-light col-xl-6 col-md-6 col-sm-12 12 p-2 my-1 rounded' >How it Works      
                 <button type='button'  class='btn btn-info btn-sm mb-1 ml-1 text-dark' data-toggle='modal' data-target="#infoModal" style='background-color:gold; border:white'>
                     <span class="fas fa-question" ></span>
               </button>
             </h3>
 
-            <div class="modal fade text-dark" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true" style='overflow: auto;'>
+            <div class="modal fade text-dark mt-5" id="infoModal" tabindex="-1" role="dialog"  style='overflow: auto;'>
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                      <div class="modal-header  mx-3" style='border:transparent'>
+                      <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
                       <div class='modal-body'>
                         <div class="card-body  bg-dark text-light show-mobile">
-                          <p class="card-text p-0 m-0">Browse and Filter OSRS Items by Their Live GE Prices</p>
+                          <p class="card-text p-0 m-0">Browse and filter GE items by mkt price, or by instant buy/sell price</p>
                             <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
 
                           <p class="card-text p-0 m-0">Data Provided by <a href='https://oldschool.runescape.wiki/w/
@@ -69,7 +69,7 @@
                       </div>
                       <ul class="list-group list-group-flush ">
                           <li class="list-group-item">... all items instant selling or buying within a specified price range. (Ex: all items instant selling for 1-20 gp)</li>
-                          <li class="list-group-item">... a sortable list of all OSRS items within a specified price range ("Regular" Price)</li>
+                          <li class="list-group-item">... a sortable list of all OSRS items within a specified market price range</li>
                           <li class="list-group-item">... live prices for a specified item</li>
                       </ul>
                         <p></p>
@@ -83,10 +83,10 @@
         </div>
       </div>
     </div>
-
+    <div id="idMyModal"></div>
     </section>
 <section >
-  <div class="container">
+  <div class="container mb-5">
     <div class="row grid-divider">
       <div class="col-sm-12 col-md-6 col-lg-6">
         <div class="card border-primary h-100">
@@ -94,19 +94,19 @@
             <div class="card-body text-primary">
                 <form class="form-group bg-light rounded p-2" id="priceRangeSearchForm">
                     <div class="container col-12">
-                        <label for="contentType">Instant Buy or Sell</label>
+                        <label for="contentType">Buy/Sell Type</label>
                         <select class="form-control" id="instantBuyOrSell">
-                            <option value="" selected>N/A</option>
-                            <option>Buy</option>
-                            <option>Sell</option>
+                            <option selected>Market</option>
+                            <option>Instant Buy</option>
+                            <option>Instant Sell</option>
                         </select>
                     </div>
                     <div class="container col-12 mt-2">
                         <label for="priceMin">Min. Price</label>
-                        <input id="priceMin" type="search" class="form-control" placeholder="1"/>
+                        <input id="priceMin" type="search" autocomplete="off" class="form-control" placeholder="1"/>
 
                         <label class='mt-2' for="priceMax">Max Price</label>
-                        <input id="priceMax" type="search" class="form-control" placeholder="1000"/>
+                        <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="1000"/>
 
                     </div>
                     <div class='text-center'>
@@ -131,7 +131,7 @@
                 <form class="form-group bg-light rounded p-2 my-3" id="itemSearchForm">
                     <div class="form-outline text-center">
                         <label for="itemSearchInput" class='float-left'>Item Name</label>
-                        <input id="itemSearchInput" type="search" class="form-control" placeholder="Leave Blank To View All Items"/>
+                        <input id="itemSearchInput" class="form-control basicAutoComplete" type="text" autocomplete="off" placeholder="Item Name"/>
                         <button id="submitItemSearch" type="submit" class="btn btn-primary btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
                             <i class="fas fa-search ml-1"></i>
                         </button>
