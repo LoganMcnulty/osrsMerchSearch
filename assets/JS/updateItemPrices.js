@@ -23,8 +23,8 @@ const updateItemPrices = () => {
         console.log('price data retrieved')
         let testData = data[0]
         var numUpdated = 0
+        
         let promiseLoop = () => { for(var key in testData){
-
             let uniqueIDKey = key
             let dataKey = testData[key]
 

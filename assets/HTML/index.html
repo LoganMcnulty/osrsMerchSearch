@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://kit.fontawesome.com/66fb9cbaef.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/66fb9cbaef.js" ></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <title>OSRS Merch Search</title>
@@ -91,90 +91,118 @@
   <div class="container mb-5">
     <div class="row">
 
-      <!-- Top Spreads Container -->
-      <div class="col-sm-12 col-md-6 col-lg-6" id='topSpreadsContainer'>
-        <div class="container">
-          <div class="row">
-            <div class="card border-dark w-100">
+    <!-- Accordion -->
+      <div id="accordion" class='col col-12' style='text-align: center;'>
+        <div class="card">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <div class="card-header" id="topSpreadsHeader">
                 <h4 class="card-header text-center font-weight-bold text-light bg-dark">View Top Spreads and Ratios</h4>
-                <div class="card-body text-primary">
-                    <form class="form-group bg-secondary text-light rounded p-3 my-1" id="topSpreadsForm">
-
-                      <div class="form-group">
-                        <label for="statType">Spread or Ratio Type</label>
-                        <select class="form-control" id="statType" required>
-                          <option selected value=''>N/A</option>
-                          <option >Bid less Ask</option>
-                          <option>High Alch less Ask</option>
-                          <option>Bid/Ask Ratio</option>
-                        </select>
-                      </div>
-                      
-                        <div class="form-outline text-center">
-                            <label for="topSpreadsNumResults" class='float-left' autocomplete='off' required>Num. Results</label>
-                            <input id="topSpreadsNumResults" class="form-control" type="number" autocomplete="off" min=0 max=100 placeholder="50"/>
-                        </div>
-
-                        <div class="row justify-content-around">
-                          <button id="submitItemSearch mx-1" type="submit" class="btn btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
-                              <i class="fas fa-search ml-1"></i>
-                          </button>
-                        </div>
-                    </form>
-                </div>
             </div>
+          </button>
+      
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="col-sm-12 col-md-6 col-lg-6" id='topSpreadsContainer'>
+              <div class="container">
+                <div class="row">
+                  <div class="card border-dark w-100">
+                      
+                        <div class="card-body text-primary">
+                          <form class="form-group bg-secondary text-light rounded p-3 my-1" id="topSpreadsForm">
+      
+                            <div class="form-group">
+                              <label for="statType" class='float-left'>Spread or Ratio Type</label>
+                              <select class="form-control" id="statType" required>
+                                <option selected value=''>N/A</option>
+                                <option >Bid less Ask</option>
+                                <option>High Alch less Ask</option>
+                                <option>Bid/Ask Ratio</option>
+                              </select>
+                            </div>
+                            
+                              <div class="form-outline text-center">
+                                  <label for="topSpreadsNumResults" class='float-left' autocomplete='off' required>Num. Results</label>
+                                  <input id="topSpreadsNumResults" class="form-control" type="number" autocomplete="off" min=0 max=100 placeholder="50"/>
+                              </div>
+      
+                              <div class="row justify-content-around">
+                                <button id="submitItemSearch mx-1" type="submit" class="btn btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
+                                    <i class="fas fa-search ml-1"></i>
+                                </button>
+                              </div>
+                          </form>
+      
+                      </div>
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+              <button class="btn btn-link collapsed justify-content-center" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <div class="card-header" id="headingTwo" >
+                  <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Filter by Bid/Ask Price</h4>
+                </div>
+              </button>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+    <!-- Filter by price container -->
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <div class="card border-dark">
+
+          <div class="card-body text-primary">
+              <form class="form-group text-light bg-secondary rounded p-3 my-1" id="priceRangeSearchForm">
+
+                <div class="container col-12 mt-2">
+                  <div class="row grid-divider"> 
+
+                    <div class='col'>
+                      <label for="contentType">Bid/Ask</label>
+                      <select class="form-control" id="bidOrAsk">
+                          <option selected>Bid</option>
+                          <option>Ask</option>
+                      </select>
+                    </div>
+
+                    <div class='col'>
+                      <label for="priceMax">Num. Results</label>
+                      <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="100" min=1 max=100 required/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container col-12 mt-2">
+                  <div class="row grid-divider"> 
+                    <div class="col">
+                      <label for="priceMin">Min. Price</label>
+                      <input id="priceMin" type="search" autocomplete="off" class="form-control" placeholder="1" min=1 required/>
+                    </div>
+
+                    <div class="col">
+                      <label for="priceMax">Max Price</label>
+                      <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="1000" required/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class='text-center'>
+                    <button id="submitPriceSearch" type="submit" class="btn btn-primary btn-lg mt-3 text-dark mr-auto" style="background-color:gold; border:white"> Submit 
+                        <i class="fas fa-search ml-1"></i>
+                    </button>
+                </div>
+              </form>
+          </div>
+        </div>
+    </div>
           </div>
         </div>
       </div>
 
-    <!-- Filter by price container -->
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <div class="card border-dark">
-            <h4 class="card-header text-center font-weight-bold text-light bg-dark">Filter by Bid/Ask Price</h4>
-            <div class="card-body text-primary">
-                <form class="form-group text-light bg-secondary rounded p-3 my-1" id="priceRangeSearchForm">
+      <!-- Top Spreads Container -->
 
-                  <div class="container col-12 mt-2">
-                    <div class="row grid-divider"> 
 
-                      <div class='col'>
-                        <label for="contentType">Bid/Ask</label>
-                        <select class="form-control" id="bidOrAsk">
-                            <option selected>Bid</option>
-                            <option>Ask</option>
-                        </select>
-                      </div>
-  
-                      <div class='col'>
-                        <label for="priceMax">Num. Results</label>
-                        <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="100" min=1 max=100 required/>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="container col-12 mt-2">
-                    <div class="row grid-divider"> 
-                      <div class="col">
-                        <label for="priceMin">Min. Price</label>
-                        <input id="priceMin" type="search" autocomplete="off" class="form-control" placeholder="1" min=1 required/>
-                      </div>
-
-                      <div class="col">
-                        <label for="priceMax">Max Price</label>
-                        <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="1000" required/>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class='text-center'>
-                      <button id="submitPriceSearch" type="submit" class="btn btn-primary btn-lg mt-3 text-dark mr-auto" style="background-color:gold; border:white"> Submit 
-                          <i class="fas fa-search ml-1"></i>
-                      </button>
-                  </div>
-                </form>
-            </div>
-          </div>
-      </div>
 
     </div>
   </div>
