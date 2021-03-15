@@ -47,7 +47,7 @@ var itemStatsSchema = new Schema({
     unique:false,
     default:0
   },
-  lowtime: {
+  lowTime: {
     type: Number,
     required: false,
     unique:false,

@@ -49,7 +49,8 @@ const updateItemPrices = () => {
 
         }}
         Promise.all([promiseLoop()])
-        .then(console.log("All set. Num Item Prices Updated 👉 " + numUpdated))
+        .then(console.log("Item prices updated"))
+        .catch(err => console.log(err))
 
     })
 }

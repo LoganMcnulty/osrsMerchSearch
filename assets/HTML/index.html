@@ -15,136 +15,176 @@
     <title>OSRS Merch Search</title>
 </head>
 
-<body class = 'bg-dark'>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style='z-index:5'>
-        <a class="navbar-brand" href="#">OSRS Merch Search</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="/About">About</a>
-            </li>
-            </ul>
-            <h2 class="lead custom-h2 timer text-center mt-2 mt-lg-0" style="font-weight:bolder"></h2>
-        </div>
-    </nav>
+<body style='background-color:black;'>
 
-  <section class="jumbotron col-xl-6 col-md-6 text-center jumbotron-fluid custom-jumbotron p-4 rounded">
+<!-- Nav bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand rounded bg-dark" id ="navBarBrand" href="#">
+      <p class='text-center text-light py-1 px-2 m-0 rounded'>
+        OSRS Merch Search        <i class="fas fa-coins" style='color:gold'></i>
+      </p>
+    </a>
+    <h2 class="lead custom-h2 timer text-center  ml-auto" id="showMobile" style="font-weight:bolder"></h2>
+  </nav>
+
+<!-- About and search Item -->
+  <section class="jumbotron col-xl-6 col-md-6 text-center jumbotron-fluid custom-jumbotron p-3 rounded mt-4">
     <div class="container text-dark">
       <div class="row">
         <div class='col-12'>
-            <h1 class='text-center bg-dark text-light p-2 rounded ml-2'>
-                OSRS Merch Search        <i class="fas fa-coins" style='color:gold'></i>
-            </h1>
 
-            <div class="row"><div class="col-12 bs-linebreak"><hr style="width:80%; height:3px"></div></div>
+        <!-- How it works text and button -->
+          <h3 class='container text-light col-xl-6 col-md-6 col-sm-12 12 p-2 my-1 bg-dark rounded' id='backgroundInvent'>How it Works      
+            <button type='button'  class='btn btn-sm mb-1 ml-1 text-dark' data-toggle='modal' data-target="#infoModal" style='background-color:gold; border:white'>
+                <span class="fas fa-question" ></span>
+          </button>
+          </h3>
 
-            <h3 class='container bg-dark text-light col-xl-6 col-md-6 col-sm-12 12 p-2 my-1 rounded' >How it Works      
-                <button type='button'  class='btn btn-info btn-sm mb-1 ml-1 text-dark' data-toggle='modal' data-target="#infoModal" style='background-color:gold; border:white'>
-                    <span class="fas fa-question" ></span>
-              </button>
-            </h3>
+        <!-- How it work Modal -->
+          <div class="modal fade text-dark mt-5" id="infoModal" tabindex="-1" role="dialog"  style='overflow: auto;'>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class='modal-body'>
+                    <div class="card-body  bg-dark text-light show-mobile">
+                      <p class="card-text p-0 m-0">Browse and filter GE items with the most up-to-date market bid/ask prices</p>
+                        <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
 
-            <div class="modal fade text-dark mt-5" id="infoModal" tabindex="-1" role="dialog"  style='overflow: auto;'>
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class='modal-body'>
-                        <div class="card-body  bg-dark text-light show-mobile">
-                          <p class="card-text p-0 m-0">Browse and filter GE items by mkt price, or by instant buy/sell price</p>
-                            <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
+                      <p class="card-text p-0 m-0">Data Provided by <a href='https://oldschool.runescape.wiki/w/
+                        RuneScape:Real-time_Prices' target='_blank'>RuneLite</a>; timestamped and updated every minute</p>
+                        <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
+                      <p class="card-text p-0 m-0">Choose to view... 👇</p>
+                  </div>
+                  <ul class="list-group list-group-flush ">
+                      <li class="list-group-item">Bid-Ask and High Alch-Ask spreads for a specified item</li>
+                      <li class="list-group-item">Top Bid-Ask spreads</li>
+                      <li class="list-group-item">Top High Alch-Ask spreads</li>
+                      <li class="list-group-item">Top Bid/Ask ratios</li>
+                      <li class="list-group-item">Top x number of items that bid or ask within a specified range. (Ex: all items selling(asking) for 1-50 gp)</li>
+                  </ul>
 
-                          <p class="card-text p-0 m-0">Data Provided by <a href='https://oldschool.runescape.wiki/w/
-                            RuneScape:Real-time_Prices' target='_blank'>RuneLite</a></p>
-                            <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
-
-                          <p class="card-text p-0 m-0">View... 👇</p>
-                      </div>
-                      <ul class="list-group list-group-flush ">
-                          <li class="list-group-item">... all items instant selling or buying within a specified price range. (Ex: all items instant selling for 1-20 gp)</li>
-                          <li class="list-group-item">... a sortable list of all OSRS items within a specified market price range</li>
-                          <li class="list-group-item">... live prices for a specified item</li>
-                      </ul>
-                        <p></p>
-
-                      </div>
-                    </div>
+                  </div>
                 </div>
-              </div>
+            </div>
+          </div>
+
+          <div class="row"><div class="col-12 bs-linebreak"><hr style="width:80%; height:3px"></div></div>
+
+          <form class="form-inline justify-content-center" id="itemSearchForm">
+            <input id="itemSearchInput" class="form-control basicAutoComplete" type="search" aria-label="Search" autocomplete="off" placeholder="Search For an Item"/>
+            <button id="submitItemSearch" type="submit" class="btn text-dark ml-2" style="background-color:gold; border:white"> Submit 
+              <i class="fas fa-search ml-1"></i>
+            </button>
+          </form>
 
         </div>
         </div>
       </div>
     </div>
-    <div id="idMyModal"></div>
-    </section>
+  </section>
+
 <section >
   <div class="container mb-5">
-    <div class="row grid-divider">
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <div class="card border-primary h-100">
-            <h4 class="card-header text-center font-weight-bold text-dark">Filter by Price</h4>
-            <div class="card-body text-primary">
-                <form class="form-group bg-light rounded p-2" id="priceRangeSearchForm">
-                    <div class="container col-12">
-                        <label for="contentType">Buy/Sell Type</label>
-                        <select class="form-control" id="instantBuyOrSell">
-                            <option selected>Market</option>
-                            <option>Instant Buy</option>
-                            <option>Instant Sell</option>
+    <div class="row">
+
+      <!-- Top Spreads Container -->
+      <div class="col-sm-12 col-md-6 col-lg-6" id='topSpreadsContainer'>
+        <div class="container">
+          <div class="row">
+            <div class="card border-dark w-100">
+                <h4 class="card-header text-center font-weight-bold text-light bg-dark">View Top Spreads and Ratios</h4>
+                <div class="card-body text-primary">
+                    <form class="form-group bg-secondary text-light rounded p-3 my-1" id="topSpreadsForm">
+
+                      <div class="form-group">
+                        <label for="statType">Spread or Ratio Type</label>
+                        <select class="form-control" id="statType" required>
+                          <option selected value=''>N/A</option>
+                          <option >Bid less Ask</option>
+                          <option>High Alch less Ask</option>
+                          <option>Bid/Ask Ratio</option>
                         </select>
-                    </div>
-                    <div class="container col-12 mt-2">
-                        <label for="priceMin">Min. Price</label>
-                        <input id="priceMin" type="search" autocomplete="off" class="form-control" placeholder="1"/>
+                      </div>
+                      
+                        <div class="form-outline text-center">
+                            <label for="topSpreadsNumResults" class='float-left' autocomplete='off' required>Num. Results</label>
+                            <input id="topSpreadsNumResults" class="form-control" type="number" autocomplete="off" min=0 max=100 placeholder="50"/>
+                        </div>
 
-                        <label class='mt-2' for="priceMax">Max Price</label>
-                        <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="1000"/>
-
-                    </div>
-                    <div class='text-center'>
-                        <button id="submitPriceSearch" type="submit" class="btn btn-primary btn-lg mt-3 text-dark mr-auto" style="background-color:gold; border:white"> Submit 
-                            <i class="fas fa-search ml-1"></i>
-                        </button>
-                    </div>
-
-                </form>
-              <!-- <h5 class="card-title">Primary card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-            </div>
-
-          </div>
-       
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-6" id='itemSearchContainer'>
-        <div class="card border-primary mb-3  h-100">
-            <h4 class="card-header text-center font-weight-bold text-dark">Search by Item</h4>
-            <div class="card-body text-primary">
-                <form class="form-group bg-light rounded p-2 my-3" id="itemSearchForm">
-                    <div class="form-outline text-center">
-                        <label for="itemSearchInput" class='float-left'>Item Name</label>
-                        <input id="itemSearchInput" class="form-control basicAutoComplete" type="text" autocomplete="off" placeholder="Item Name"/>
-                        <button id="submitItemSearch" type="submit" class="btn btn-primary btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
-                            <i class="fas fa-search ml-1"></i>
-                        </button>
-                    </div>
-                </form>
+                        <div class="row justify-content-around">
+                          <button id="submitItemSearch mx-1" type="submit" class="btn btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
+                              <i class="fas fa-search ml-1"></i>
+                          </button>
+                        </div>
+                    </form>
+                </div>
             </div>
           </div>
         </div>
-
       </div>
+
+    <!-- Filter by price container -->
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="card border-dark">
+            <h4 class="card-header text-center font-weight-bold text-light bg-dark">Filter by Bid/Ask Price</h4>
+            <div class="card-body text-primary">
+                <form class="form-group text-light bg-secondary rounded p-3 my-1" id="priceRangeSearchForm">
+
+                  <div class="container col-12 mt-2">
+                    <div class="row grid-divider"> 
+
+                      <div class='col'>
+                        <label for="contentType">Bid/Ask</label>
+                        <select class="form-control" id="bidOrAsk">
+                            <option selected>Bid</option>
+                            <option>Ask</option>
+                        </select>
+                      </div>
+  
+                      <div class='col'>
+                        <label for="priceMax">Num. Results</label>
+                        <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="100" min=1 max=100 required/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="container col-12 mt-2">
+                    <div class="row grid-divider"> 
+                      <div class="col">
+                        <label for="priceMin">Min. Price</label>
+                        <input id="priceMin" type="search" autocomplete="off" class="form-control" placeholder="1" min=1 required/>
+                      </div>
+
+                      <div class="col">
+                        <label for="priceMax">Max Price</label>
+                        <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="1000" required/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class='text-center'>
+                      <button id="submitPriceSearch" type="submit" class="btn btn-primary btn-lg mt-3 text-dark mr-auto" style="background-color:gold; border:white"> Submit 
+                          <i class="fas fa-search ml-1"></i>
+                      </button>
+                  </div>
+                </form>
+            </div>
+          </div>
+      </div>
+
     </div>
   </div>
 </section>
+
+<footer class="mt-auto justify-content-center text-center">
+  <div class="inner text-light">
+    <p><a href="/About" target="_blank">About the Project & Contact Info</a></p>
+  </div>
+</footer>
 
     <div class="container text-dark" >
         <div class="row d-flex justify-content-center">
@@ -163,6 +203,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 <script src="../JS/script.js"></script>
-
 
 </html>

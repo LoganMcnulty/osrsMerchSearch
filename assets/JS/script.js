@@ -1,13 +1,24 @@
 var timeEl = $('.timer');
 var dateAtStart = moment().unix();
 timeEl.text(moment.unix(dateAtStart).format("MMM Do, YYYY, hh:mm:ss"));
-var instantBuyOrSell = $('#instantBuyOrSell');
+
+// Filter by Price vars
+var bidOrAsk = $('#bidOrAsk');
 var priceMin = $('#priceMin');
 var priceMax = $('#priceMax');
-var itemSearchInput = $('#itemSearchInput');
+var priceNumResults = $('#priceMax');
 var priceRangeSearchForm = $('#priceRangeSearchForm');
+
+// Item Search vars
+var itemSearchInput = $('#itemSearchInput');
 var itemSearchForm = $('#itemSearchForm');
-let allItems
+
+// View Stats vars
+var topSpreadNumResults = $('#topSpreadNumResults');
+var statType = $('#statType');
+var topSpreadsForm = $('#topSpreadsForm');
+
+//Results Container
 var resultsContainer = $('#resultsContainer')
 
 // Date and time stuff
@@ -41,11 +52,11 @@ pullDBItems()
 
 var handlePriceFormSubmit = function (event) {
   event.preventDefault();
-
-  search = {
-    instantBuyOrSell: instantBuyOrSell.val(),
-    priceMin: priceMin.val(),
-    priceMax: priceMax.val(),
+  let search = {
+    bidOrAsk: bidOrAsk.val(),
+    priceMin: parseFloat(priceMin.val()),
+    priceMax: parseFloat(priceMax.val()),
+    numResults: parseFloat(priceNumResults.val())
   }
   console.log(search)
 
@@ -54,7 +65,23 @@ var handlePriceFormSubmit = function (event) {
   // hitLOC_API(search)
 
   };
-priceRangeSearchForm.on('submit',handlePriceFormSubmit);
+  priceRangeSearchForm.on('submit',handlePriceFormSubmit);
+priceRangeSearchForm
+
+var handleStatsFormSubmit = function (event) {
+  event.preventDefault();
+
+  let search = {
+    numResults: topSpreadNumResults.val(),
+    statType: statType.val()
+  }
+  console.log(search)
+
+  topSpreadsForm.trigger('reset')
+  // hitLOC_API(search)
+
+  };
+  topSpreadsForm.on('submit',handleStatsFormSubmit);
 
 var handleItemFormSubmit = function (event) {
   event.preventDefault();
@@ -95,9 +122,20 @@ function cleanMultiItemData(data){
 function displayItemCard(itemData){
   console.log(itemData)
   let listDataArray = [
-    "<h5 class='text text-dark'> Buy Limit: " + itemData.stats.buy_limit + "</h5>", 
-    "<h5 class='text text-dark'> High Alch Price: " + itemData.stats.highalch + "</h5>", 
-    "<a target=_blank href="+itemData.stats.wiki_url+">Wiki URL</a>"]
+    // moment.unix(itemData.stats.highTime).format("MMM Do, hh:mm:ss")
+  // Bid, Ask, AsofDates
+    `<div class='d-flex flex-row justify-content-around align-items-center'><h4 class='text text-dark' >Bid: ${numberWithCommas(itemData.stats.high)}</h4><h4 class='text '>Ask: ${numberWithCommas(itemData.stats.low)}</h4></div><div class='d-flex flex-row justify-content-around align-items-center'><h6 class='text text-dark'>${moment.unix(itemData.stats.highTime).format("hh:mm:ss")}</h6> <h6 class='text'>${moment.unix(itemData.stats.lowTime).format("hh:mm:ss")}</h6></div>`
+    ,
+    `<div class='d-flex flex-row justify-content-around align-items-center pt-2'><h5 class='text text-dark'>Bid/Ask Spread: ${numberWithCommas(itemData.stats.high - itemData.stats.low)}</h5></div>`
+    ,
+  // High Alch Price / Spread
+    `<div class='d-flex flex-row justify-content-around align-items-center'><h5 class='text text-dark'> HA/Ask Spread: ${numberWithCommas(itemData.stats.highalch - itemData.stats.low)} </h5></div>`
+    ,
+  
+  // WIki URL, buy limit
+    `<div class='d-flex flex-row justify-content-around align-items-center'><a target=_blank href=${itemData.stats.wiki_url}>Wiki URL</a><h6 class='text text-dark'>Buy Limit: ${numberWithCommas(itemData.stats.buy_limit)}</h6></div>`,
+  
+  ]
   let itemModal = createModal(itemData, listDataTrue=true, listData=listDataArray, listDataHeader=itemData.name)
   resultsContainer.append(itemModal)
   $("#modalWindow").modal('show');
@@ -134,4 +172,8 @@ const createModal = (data, listDataTrue='', listData = '', listDataHeader='') =>
   modalDialog.append(modalContent)
   modalMain.append(modalDialog)
   return modalMain
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

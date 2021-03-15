@@ -2,11 +2,46 @@
 sendRequestHTML = require('../JS/sendRequestHTML.js');
 updateItems = require('../JS/updateItems.js')
 updateItemPrices = require('../JS/updateItemPrices.js')
-const db = require("../../models");
 masterDelete = require('../JS/duplicates.js');
+
+const db = require("../../models");
 
 // ROUTING
 module.exports = (app) => {
+  app.get('/api/itemStats/:statType/:limit', (req,res) => {
+    const requestParams = req.params
+    const statParam = requestParams.statType
+    const limit = requestParams.limit
+    var statType = {}
+    statType[statParam] = -1
+    console.log(statType)
+    db.Item.aggregate([
+      {$match: {
+          "stats.highTime": {$ne: null},
+          "stats.low": {$nin: [null, 0]},
+          "stats.high": {$nin: [null, 0]},
+          "stats.buy_limit": {$ne:null},
+          "stats.highalch": {$ne:null}
+          }},
+      {$addFields:{
+          HAAskSpread: { $subtract: [ "$stats.highalch", "$stats.low" ] },
+          BidAskSpread: {$subtract: [ "$stats.high", "$stats.low" ] },
+          BidAskRatio: {$divide: ["$stats.low", "$stats.high"]},
+          }},
+      {$project:{
+           _id:1,
+          name:1,
+          stats:1,
+          HAAskSpread:1,
+          BidAskSpread:1,
+          BidAskRatio:1
+      }},
+      {$sort: statType},
+      {$limit: parseFloat(limit)}
+  ])
+    .then((item) => res.json(item));
+
+  })
 
   app.get('/api/updateItems', (req,res) => {
     updateItems()
@@ -24,14 +59,6 @@ module.exports = (app) => {
     updateItemPrices()
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(sendRequestHTML('Pulling latest item prices from RuneLite'))
-    })
-
-  app.get('/api/itemPrices', (req,res) => {
-
-    })
-
-  app.get('/api/itemPrices/:item', (req,res) => {
-
     })
 
   app.get('/api/items', (req,res) => {
@@ -63,7 +90,6 @@ module.exports = (app) => {
         res.json(result);
       }
     });
-    // res.json({ ok: true });
   });
 
 };
