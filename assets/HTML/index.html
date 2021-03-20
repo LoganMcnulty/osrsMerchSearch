@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="Description" content="Enter your description here" />
+
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/66fb9cbaef.js" ></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
+
     <title>OSRS Merch Search</title>
 </head>
 
@@ -28,14 +31,14 @@
   </nav>
 
 <!-- About and search Item -->
-  <section class="jumbotron col-xl-6 col-md-6 text-center jumbotron-fluid custom-jumbotron p-3 rounded mt-4">
+  <section class="jumbotron col-xl-4 col-md-6 col-sm-12 text-center jumbotron-fluid custom-jumbotron p-3 rounded mt-4">
     <div class="container text-dark">
       <div class="row">
         <div class='col-12'>
 
         <!-- How it works text and button -->
-          <h3 class='container text-light col-xl-6 col-md-6 col-sm-12 12 p-2 my-1 bg-dark rounded' id='backgroundInvent'>How it Works      
-            <button type='button'  class='btn btn-sm mb-1 ml-1 text-dark' data-toggle='modal' data-target="#infoModal" style='background-color:gold; border:white'>
+          <h3 class='container text-light col-xl-6 col-md-6 col-sm-12 12 p-2 my-1 bg-dark rounded w-100' id='backgroundInvent'>How it Works      
+            <button type='button'  class='btn btn-sm mb-1 ml-1 p-2 text-dark' data-toggle='modal' data-target="#infoModal" style='background-color:gold; border:white'>
                 <span class="fas fa-question" ></span>
           </button>
           </h3>
@@ -49,13 +52,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class='modal-body'>
+                  <div class='modal-body p-0'>
                     <div class="card-body  bg-dark text-light show-mobile">
-                      <p class="card-text p-0 m-0">Browse and filter GE items with the most up-to-date market bid/ask prices</p>
+                      <p class="card-text p-0 m-0">Browse and filter GE items using the most up-to-date market bid and ask quotes</p>
                         <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
 
                       <p class="card-text p-0 m-0">Data Provided by <a href='https://oldschool.runescape.wiki/w/
-                        RuneScape:Real-time_Prices' target='_blank'>RuneLite</a>; timestamped and updated every minute</p>
+                        RuneScape:Real-time_Prices' target='_blank' style='color:gold'>RuneLite</a> and quotes are timestamped</p>
                         <div class="row"><div class="col-12 bs-linebreak p-0 m-0"><hr id='lineBreak'></div></div>
                       <p class="card-text p-0 m-0">Choose to view... 👇</p>
                   </div>
@@ -63,9 +66,13 @@
                       <li class="list-group-item">Bid-Ask and High Alch-Ask spreads for a specified item</li>
                       <li class="list-group-item">Top Bid-Ask spreads</li>
                       <li class="list-group-item">Top High Alch-Ask spreads</li>
-                      <li class="list-group-item">Top Bid/Ask ratios</li>
-                      <li class="list-group-item">Top x number of items that bid or ask within a specified range. (Ex: all items selling(asking) for 1-50 gp)</li>
+                      <li class="list-group-item">Top x # of items that bid or ask within a specified price range. (Ex: all items selling(asking) for 1-50 gp)</li>
                   </ul>
+
+                  <div class="card-body bg-dark text-light show-mobile justify-content-center text-align-center">
+                    <p class='card-text p-0 m-0 w-100'>Start adding to your item watchlist today</p>
+                    <button class='btn btn-primary mt-3'>Sign Up</button>
+                  </div>
 
                   </div>
                 </div>
@@ -87,52 +94,65 @@
     </div>
   </section>
 
+<!-- Main content for search setting -->
 <section >
-  <div class="container mb-5">
+  <div class="container">
     <div class="row">
 
     <!-- Accordion -->
-      <div id="accordion" class='col col-12' style='text-align: center;'>
+      <div id="accordion" class='col col-lg-10 col-sm-12 mx-auto' style='text-align: center;'>
         <div class="card">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            <div class="card-header" id="topSpreadsHeader">
-                <h4 class="card-header text-center font-weight-bold text-light bg-dark">View Top Spreads and Ratios</h4>
+          <button class="btn btn-link" id='expandOne' data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"  style='text-decoration-color: gold'>
+            <div class="card-header bg-dark" id="topSpreadsHeader">
+                <h4 class="card-header text-center font-weight-bold text-light bg-dark" >View Top Spreads <i class="fas fa-balance-scale-left ml-1" style='color:gold' id='spreadsIcon'></i></h4>
             </div>
           </button>
-      
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="col-sm-12 col-md-6 col-lg-6" id='topSpreadsContainer'>
+
+      <!-- Top Spreads Container -->
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="col-sm-12 col-md-6 col-lg-8   justify-content-center text-center mx-auto" id='topSpreadsContainer'>
               <div class="container">
                 <div class="row">
-                  <div class="card border-dark w-100">
+                  <div class="card my-2"  style='border:none'>
                       
                         <div class="card-body text-primary">
-                          <form class="form-group bg-secondary text-light rounded p-3 my-1" id="topSpreadsForm">
+                          <form class="form-group bg-secondary text-light rounded p-2" id="topSpreadsForm">
       
-                            <div class="form-group">
-                              <label for="statType" class='float-left'>Spread or Ratio Type</label>
-                              <select class="form-control" id="statType" required>
-                                <option selected value=''>N/A</option>
-                                <option >Bid less Ask</option>
-                                <option>High Alch less Ask</option>
-                                <option>Bid/Ask Ratio</option>
-                              </select>
+                            <div class="container col-12">
+                              <div class="row grid-divider"> 
+                                <div class="col-lg-6 col-sm-12 mt-2" id='spreadsColumn'>
+                                    <div class="form-outline text-center">
+                                      <label for="statType" class='float-left'>Spread Type</label>
+                                      <select class="form-control" id="statType" required>
+                                        <option selected value=''>N/A</option>
+                                        <option >Bid less Ask</option>
+                                        <option>High Alch less Ask</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-12 mt-2" id='spreadsColumn'>
+                                  <div class="form-outline text-center">
+                                    <label for="maxSpread" class='float-left' autocomplete='off'>Max Spread (optional)</label>
+                                    <input id="maxSpread" class="form-control" type="float" autocomplete="off" min=-1 max=5000000 placeholder="Default 50k"/>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            
-                              <div class="form-outline text-center">
-                                  <label for="topSpreadsNumResults" class='float-left' autocomplete='off' required>Num. Results</label>
-                                  <input id="topSpreadsNumResults" class="form-control" type="number" autocomplete="off" min=0 max=100 placeholder="50"/>
-                              </div>
-      
-                              <div class="row justify-content-around">
-                                <button id="submitItemSearch mx-1" type="submit" class="btn btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
-                                    <i class="fas fa-search ml-1"></i>
-                                </button>
-                              </div>
+
+                            <div class='col-lg-6 col-sm-12 mt-2 justify-content-center text-center mx-auto'>
+                              <label for="statsNumResults" class='float-left'>Num. Results (optional)</label>
+                              <input id="statsNumResults" type="number" autocomplete="off" class="form-control" placeholder="Default 100" min=1 max=200 />
+                            </div>
+
+                            <div class="row justify-content-around">
+                              <button id="submitSpreadSearch mx-1" type="submit" class="btn btn-lg mt-3 text-dark" style="background-color:gold; border:white"> Submit 
+                                  <i class="fas fa-search ml-1"></i>
+                              </button>
+                            </div>
+
                           </form>
-      
                       </div>
-      
+
                   </div>
                 </div>
               </div>
@@ -140,48 +160,51 @@
           </div>
         </div>
 
-        <div class="card">
-              <button class="btn btn-link collapsed justify-content-center" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <div class="card-header" id="headingTwo" >
-                  <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Filter by Bid/Ask Price</h4>
-                </div>
-              </button>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
     <!-- Filter by price container -->
-    <div class="col-sm-12 col-md-6 col-lg-6">
-      <div class="card border-dark">
+    <div class="card">
+        <button class="btn btn-link collapsed justify-content-center" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style='text-decoration-color: gold' id='expandTwo'> 
+          <div class="card-header bg-dark" id="headingTwo" >
+            <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Filter by Bid or Ask Price
+              <i class="fas fa-sort-amount-down ml-1" style='color:gold'></i >
+            </h4>
+          </div>
+        </button>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+
+    <div class="col-sm-12 col-md-6 col-lg-8 justify-content-center text-center mx-auto">
+      <div class="card my-2" style='border:none'>
 
           <div class="card-body text-primary">
-              <form class="form-group text-light bg-secondary rounded p-3 my-1" id="priceRangeSearchForm">
+              <form class="form-group text-light bg-secondary rounded p-2" id="priceRangeSearchForm">
 
-                <div class="container col-12 mt-2">
+                <div class="container col-12">
                   <div class="row grid-divider"> 
 
-                    <div class='col'>
-                      <label for="contentType">Bid/Ask</label>
+                    <div class='col-lg-6 col-sm-12 mt-2'>
+                      <label for="contentType" class='float-left'>Bid/Ask</label>
                       <select class="form-control" id="bidOrAsk">
                           <option selected>Bid</option>
                           <option>Ask</option>
                       </select>
                     </div>
 
-                    <div class='col'>
-                      <label for="priceMax">Num. Results</label>
-                      <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="100" min=1 max=100 required/>
+                    <div class='col-lg-6 col-sm-12 mt-2'>
+                      <label for="priceNumResults" class='float-left'>Num. Results (optional)</label>
+                      <input id="priceNumResults" type="search" autocomplete="off" class="form-control" placeholder="Default 100" min=1 max=100 />
                     </div>
                   </div>
                 </div>
 
-                <div class="container col-12 mt-2">
+                <div class="container col-12">
                   <div class="row grid-divider"> 
-                    <div class="col">
-                      <label for="priceMin">Min. Price</label>
-                      <input id="priceMin" type="search" autocomplete="off" class="form-control" placeholder="1" min=1 required/>
+                    <div class="col-lg-6 col-sm-12 mt-2">
+                      <label for="priceMin" class='float-left'>Min. Price</label>
+                      <input id="priceMin" type="number" autocomplete="off" class="form-control" placeholder="1" min=1 required/>
                     </div>
 
-                    <div class="col">
-                      <label for="priceMax">Max Price</label>
-                      <input id="priceMax" type="search" autocomplete="off" class="form-control" placeholder="1000" required/>
+                    <div class="col-lg-6 col-sm-12 mt-2">
+                      <label for="priceMax" class='float-left'>Max Price</label>
+                      <input id="priceMax" type="number" autocomplete="off" class="form-control" placeholder="100000" required/>
                     </div>
                   </div>
                 </div>
@@ -196,40 +219,35 @@
         </div>
     </div>
           </div>
-        </div>
       </div>
-
-      <!-- Top Spreads Container -->
-
-
-
+    </div>
 
     </div>
   </div>
 </section>
 
-<footer class="mt-auto justify-content-center text-center">
-  <div class="inner text-light">
-    <p><a href="/About" target="_blank">About the Project & Contact Info</a></p>
+
+<!-- Results Container -->
+  <div class="container text-dark bg-light rounded mx-auto justify-content-center bg-transparent col-lg-6 col-sm-12 p-0"  id='resultsContainer'></div>
+
+
+  <!-- Footer -->
+<footer class="mt-5 justify-content-center text-center">
+  <div class="inner">
+    <p><a href="/About" target="_blank" style='color:gold'>About the Project & Contact Info</a></p>
+    <p  style='color:gold'>2021</p>
   </div>
 </footer>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 
-    <div class="container text-dark" >
-        <div class="row d-flex justify-content-center">
-          <div class='col-12'>
-            <div class="card-columns" id='resultsContainer'>
-              </div>
-          </div>
-        </div>
-    </div>
-    
+
+  <script src="../JS/script.js"></script>
+
 </body>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-<script src="../JS/script.js"></script>
-
 </html>

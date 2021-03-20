@@ -1,6 +1,11 @@
-// Exporting an object containing all of our models
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
+const db = {};
+db.mongoose = mongoose;
 
 module.exports = {
     Item: require("./Items"),
+    db
   };
   

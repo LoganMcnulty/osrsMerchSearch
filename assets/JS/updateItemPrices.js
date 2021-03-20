@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const apiPath = 'https://prices.runescape.wiki/osrs/latest'
+const apiPath = 'https://prices.runescape.wiki/api/v1/osrs/latest'
 const db = require("../../models");
 const pageCount = 1
 const fs = require('fs')
@@ -21,12 +21,13 @@ const updateItemPrices = () => {
     // .then(data => data.map(d => d._items))
     .then(data => {
         console.log('price data retrieved')
-        let testData = data[0]
+        let testData = data[0]['data']
         var numUpdated = 0
-        
         let promiseLoop = () => { for(var key in testData){
             let uniqueIDKey = key
             let dataKey = testData[key]
+            // console.log(uniqueIDKey)
+            // console.log(dataKey)
 
             db.Item.updateOne({'uniqueID':uniqueIDKey},
                 {"$set":{
@@ -38,10 +39,9 @@ const updateItemPrices = () => {
                 },{upsert: true}).exec(function(err, item){
                 if(err) {
                     console.log(err);
-                    // res.status(500).send(err);
+                    res.status(500).send(err);
                 } else {
                     numUpdated+=1
-                    // console.log('update successful')
                         //  res.status(200).send(item);
                 }
              });

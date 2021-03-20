@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const apiPath = 'https://api.osrsbox.com/items'
 const db = require("../../models");
-const pageCount = 965
+const pageCount = 966
 
 const cleanDataFunc = (arr) => {
     let result = [];
