@@ -27,10 +27,7 @@ module.exports = (app) => {
             return res.status(200).json({user:user})
         })
     })(req, res, next);
-})
-
-  // app.use("/api/auth", auth);
-  app.get("/api/goodMorning", (req, res) => res.send("Good morning"));
+  })
 
   app.get('/api/itemStats/:statType/:limit/:maxSpread', (req,res) => {
     const requestParams = req.params
@@ -38,26 +35,15 @@ module.exports = (app) => {
     const limit = requestParams.limit
     const maxSpread = requestParams.maxSpread
 
-    if (statParam = 'Bid less Ask'){
-      statParam = "BidAskSpread"
-    }
-    else if(statParam = 'High Alch less Ask'){
-      statParam = "HAAskSpread"
-    }
-    else if(statParam = 'Bid/Ask Ratio'){
-      statParam = "BidAskRatio"
-    }
-    else{
-      console.log('Something went wrong')
-    }
-
     console.log(req.params)
 
     var statType = {}
     statType[statParam] = -1
+    // console.log(statType)
 
     var statLTEGTEParam = {}
     statLTEGTEParam[statParam] = {$lt: parseFloat(maxSpread)}
+    // console.log(statLTEGTEParam)
 
     db.Item.aggregate([
       {$match: {
@@ -184,6 +170,20 @@ module.exports = (app) => {
     db.Item.find({
         name: item
     }).then((item) => res.json(item));
+  });
+
+  app.get('/api/uniqueids/:uniqueIDs', (req, res) => {
+    let uniqueIDs = req.params.uniqueIDs.split(',')
+    var uniqueIDsDict = {}
+    uniqueIDsDict["$in"] = uniqueIDs
+    db.Item.find({
+      uniqueID: uniqueIDsDict,
+      "stats.highTime": {$ne: null},
+      "stats.low": {$nin: [null, 0]},
+      "stats.high": {$nin: [null, 0]},
+      "stats.buy_limit": {$ne:null},
+      "stats.highalch": {$ne:null}
+    }).then((uniqueIdItem) => res.json(uniqueIdItem));
   });
 
   app.get('/api/masterDelete', (req, res) => {

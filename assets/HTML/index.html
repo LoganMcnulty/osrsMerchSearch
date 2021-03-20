@@ -37,7 +37,8 @@
         <div class='col-12'>
 
         <!-- How it works text and button -->
-          <h3 class='container text-light col-xl-6 col-md-6 col-sm-12 12 p-2 my-1 bg-dark rounded w-100' id='backgroundInvent'>How it Works      
+          <h3 class='container text-light col-xl-8 col-md-6 col-sm-12 12 p-2 my-1 bg-dark rounded w-100' id='backgroundInvent'>
+            How it Works      
             <button type='button'  class='btn btn-sm mb-1 ml-1 p-2 text-dark' data-toggle='modal' data-target="#infoModal" style='background-color:gold; border:white'>
                 <span class="fas fa-question" ></span>
           </button>
@@ -68,10 +69,9 @@
                       <li class="list-group-item">Top High Alch-Ask spreads</li>
                       <li class="list-group-item">Top x # of items that bid or ask within a specified price range. (Ex: all items selling(asking) for 1-50 gp)</li>
                   </ul>
-
-                  <div class="card-body bg-dark text-light show-mobile justify-content-center text-align-center">
-                    <p class='card-text p-0 m-0 w-100'>Start adding to your item watchlist today</p>
-                    <button class='btn btn-primary mt-3'>Sign Up</button>
+                  
+                  <div class="card-body  bg-dark text-light show-mobile">
+                    <p class="card-text p-0 m-0">Items can be saved to your browser's local storage for viewing later</p>
                   </div>
 
                   </div>
@@ -97,14 +97,14 @@
 <!-- Main content for search setting -->
 <section >
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
 
     <!-- Accordion -->
-      <div id="accordion" class='col col-lg-10 col-sm-12 mx-auto' style='text-align: center;'>
+      <div id="accordion" class='col col-lg-10 col-sm-12 p-0 m-0' style='text-align: center;'>
         <div class="card">
           <button class="btn btn-link" id='expandOne' data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"  style='text-decoration-color: gold'>
             <div class="card-header bg-dark" id="topSpreadsHeader">
-                <h4 class="card-header text-center font-weight-bold text-light bg-dark" >View Top Spreads <i class="fas fa-balance-scale-left ml-1" style='color:gold' id='spreadsIcon'></i></h4>
+                <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Top Spreads <i class="fas fa-balance-scale-left ml-1" style='color:gold' id='spreadsIcon'></i></h4>
             </div>
           </button>
 
@@ -133,7 +133,7 @@
                                 <div class="col-lg-6 col-sm-12 mt-2" id='spreadsColumn'>
                                   <div class="form-outline text-center">
                                     <label for="maxSpread" class='float-left' autocomplete='off'>Max Spread (optional)</label>
-                                    <input id="maxSpread" class="form-control" type="float" autocomplete="off" min=-1 max=5000000 placeholder="Default 50k"/>
+                                    <input id="maxSpread" class="form-control" type="number" autocomplete="off" min=-1 max=5000000 placeholder="Default 50k"/>
                                   </div>
                                 </div>
                               </div>
@@ -158,13 +158,30 @@
               </div>
             </div>
           </div>
+
+
+    <!-- Saved Items -->
+      <div class="card">
+        <button class="btn btn-link collapsed justify-content-center" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style='text-decoration-color: gold' id='expandThree'> 
+            <div class="card-header bg-dark" id="headingThree" >
+              <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Saved Items
+                <i class="fas fa-save ml-1" style='color:gold'></i >
+              </h4>
+            </div>
+        </button>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+
+        <div class="col-12 justify-content-center text-center mx-auto" id='savedItemsTable'>
+
         </div>
+      </div>
+    </div>
 
     <!-- Filter by price container -->
     <div class="card">
         <button class="btn btn-link collapsed justify-content-center" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style='text-decoration-color: gold' id='expandTwo'> 
           <div class="card-header bg-dark" id="headingTwo" >
-            <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Filter by Bid or Ask Price
+            <h4 class="card-header text-center font-weight-bold text-light bg-dark" >Filter by Bid or Ask
               <i class="fas fa-sort-amount-down ml-1" style='color:gold'></i >
             </h4>
           </div>
@@ -232,7 +249,11 @@
 
 
   <!-- Footer -->
-<footer class="mt-5 justify-content-center text-center">
+<footer class="mt-5 justify-content-center text-center" style=' position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;'>
   <div class="inner">
     <p><a href="/About" target="_blank" style='color:gold'>About the Project & Contact Info</a></p>
     <p  style='color:gold'>2021</p>

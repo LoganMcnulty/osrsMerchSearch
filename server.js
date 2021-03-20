@@ -7,7 +7,6 @@ const fetch = require("node-fetch");
 
 const passport = require("./server/passport/setup")
 
-
 const PORT = process.env.PORT || 8080;
 // Sets up the Express App
 const app = express();

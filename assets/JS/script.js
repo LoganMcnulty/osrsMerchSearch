@@ -140,6 +140,7 @@ var handleStatsFormSubmit = function (event) {
       $('.fixed-table-toolbar').addClass('bg-warning px-2 rounded mt-4')
       $('.fixed-table-toolbar').append($('<button>').addClass('btn btn-lg btn-danger mt-1').attr('style','float:left; vertical-align:middle').text('Clear')).attr('id','clearResultsTable')
       listenDelete('clearResultsTable')
+      listenSave()
 
       // $('.saveItemButton').on('click', function(){
       //   console.log($(this).html().attr('id'))
@@ -253,7 +254,6 @@ var handlePriceFormSubmit = function (event) {
     search.numResults = 100
   }
 
-
   let urlPriceStats = '/api/priceRange/' + search.bidOrAsk + '/' + search.numResults + '/' + search.priceMin + '/' + search.priceMax
   console.log(urlPriceStats)
   console.log(`Searching For: ${search.bidOrAsk} less than ${search.priceMax} and greater than ${search.priceMin}`)
@@ -267,7 +267,7 @@ var handlePriceFormSubmit = function (event) {
   .then(data => {
     console.log("Price filter data retrieved")
     var dataTable = $('<table>').attr('id','dataTable').addClass('table table-striped table-dark data-toggle m-0 p-0').attr('data-toggle','table')
-    var tableBody = $('<tBody>').addClass('m-0 p-0')
+    var tableBody = $('<tBody>').addClass('m-0 p-0').attr('id','statsTableBody')
     var tableHead = $('<thead>')
     var tableRow = $('<tr>')
     var columnHeader1 = $('<th>').attr('scope','col').html('Item')
@@ -321,12 +321,14 @@ var handlePriceFormSubmit = function (event) {
       search: true,
       pageSize: 20
     })
+
     $('#expandTwo').trigger('click')
     $('.fixed-table-body').attr('style','height:auto; overflow:auto')
     $('.fixed-table-pagination').addClass('bg-warning px-2 mb-4 rounded')
     $('.fixed-table-toolbar').addClass('bg-warning px-2 rounded mt-4')
     $('.fixed-table-toolbar').append($('<button>').addClass('btn btn-lg btn-danger mt-1').attr('style','float:left; vertical-align:middle').text('Clear')).attr('id','clearResultsTable')
     listenDelete('clearResultsTable')
+    listenSave()
   })
 
   };
@@ -378,4 +380,96 @@ let listenDelete = (buttonID) => {
     resultsContainer.empty()
   })
 }
- 
+
+var userItems = []
+
+const checkSavedItems = () => {
+  var storedItems = JSON.parse(localStorage.getItem("OSRS_Merch"));
+  console.log(storedItems)
+  console.log(`User Items from local storage: ${storedItems}`)
+  if (storedItems.length > 0) {
+    userItems = storedItems;
+    let requests = [fetch('/api/uniqueids/' + userItems).catch(err => console.log(err))]
+    // Promise.all waits until all jobs are resolved
+      Promise.all(requests)
+      .then(responses => responses)
+      .then(responses => Promise.all(responses.map(r => r.json())))
+      .then(data => {
+        console.log("User saved item info retrieved from MongoDB")
+        console.log(data)
+        renderStoredItems(data)
+      })
+  }
+  else{
+    $('#savedItemsTable').html(`<p class='text mt-2'>Add items to your watch list</p>`)
+  }
+}
+checkSavedItems()
+
+const listenSave = () => {
+  $('.saveItemButton').on('click', function(e){
+    e.preventDefault()
+    var saveItem = $(this).attr('uniqueid')
+    console.log('Saveing item ' + saveItem)
+    userItems.push(saveItem);
+    localStorage.setItem("OSRS_Merch", JSON.stringify(userItems));
+    checkSavedItems()
+  })
+}
+
+const listenClearSaved = () => {
+  $('.clearSaved').on('click', function(e){
+    localStorage.setItem("OSRS_Merch", JSON.stringify([]));
+    userItems = []
+    $('#savedItemsTable').html(`<p class='text mt-2'>Add items to your watch list</p>`)
+  })
+}
+
+const listenRemoveOne = () => {
+  $('.deleteItemButton').on('click', function(e){
+    let deleteThis = $(this).attr('uniqueid')
+    console.log(deleteThis)
+    // localStorage.setItem("OSRS_Merch", JSON.stringify([]));
+    userItems = userItems.filter(function(item) {
+      return item !== deleteThis
+  })
+  localStorage.setItem("OSRS_Merch", JSON.stringify(userItems));
+  checkSavedItems()
+  })
+}
+
+const renderStoredItems = (data) => {
+
+  $('#savedItemsTable').html('')
+  let renderStored = data[0]
+  var trTemp = `<tr>
+  <th>Item</th>
+  <th>Bid - Ask</th>
+  <th>HA - Ask</th>
+  <th>Remove</th>
+  <tr>`
+  let newTable = $('<table>').addClass('table table-striped table-dark rounded mb-2 p-0')
+  newTable.append($('<thead>').append(trTemp))
+  newTable.append(`<tbody id='savedItemTableBody'></tbody>`)
+  let deleteGhost = $('<div>').append($("<button>").addClass('btn btn-lg btn-danger p-2 my-1 clearSaved').text('Clear Saved').append($('<i>').addClass("fa fa-trash-alt m-2")))
+  $('#savedItemsTable').append(deleteGhost)
+  $('#savedItemsTable').append(newTable)
+
+  for(let i=0; i < renderStored.length; i++){
+    let itemRow = $('<tr>')
+    let itemNameCell = $('<th>').attr('scope','row').html(titleCase(renderStored[i]['name']))
+    let bidAskSpreadCell = $('<td>').html(numberWithCommas(renderStored[i]['stats']['high'] - renderStored[i]['stats']['low']))
+    let haAskSpreadCell = $('<td>').html(numberWithCommas(renderStored[i]['stats']['highalch'] - renderStored[i]['stats']['low']))
+    // let bidAskRatioCell = $('<td>').html(Math.round((renderStored[i]['stats']['high']/renderStored[i]['stats']['low']) * 100)/100)
+    let deleteIcon = $('<i>').addClass('fas fa-backspace')
+    let deleteButton = $('<button>').addClass('btn btn-danger deleteItemButton').attr('uniqueid',renderStored[i]['uniqueID']).html(deleteIcon)
+    let deleteCell = $('<td>').html(deleteButton).addClass('text-align-center justify-content-center')
+    itemRow.append(itemNameCell, bidAskSpreadCell, haAskSpreadCell,
+      //  bidAskRatioCell,
+      deleteCell)
+    $('#savedItemTableBody').append(itemRow)
+  }
+
+  listenRemoveOne()
+  listenClearSaved()
+}
