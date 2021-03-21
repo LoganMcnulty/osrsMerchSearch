@@ -3,8 +3,7 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const fetch = require("node-fetch");
-// const mongoose = require("mongoose")
-
+require('dotenv').config()
 const passport = require("./server/passport/setup")
 
 const PORT = process.env.PORT || 8080;
@@ -17,15 +16,12 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use(express.static('assets'));
 const htmlRouter = require('./assets/Routes/htmlRoutes.js');
 const apiRouter = require('./assets/Routes/APIRoutes.js');
-
-app.use(express.static('assets'));
 const db = require("./models").db;
 
-const mongoDBConnection = "mongodb://localhost/OSRS_Merch_Search"
-
-db.mongoose.connect(process.env.MONGODB_URI || mongoDBConnection, {
+db.mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology:true
@@ -41,7 +37,7 @@ app.use(
     secret: "very secret this is",
     resave:false,
     saveUninitialized: true,
-    store: MongoStore.create({mongoUrl: mongoDBConnection})
+    store: MongoStore.create({mongoUrl: process.env.MONGODB_URI})
   })
 )
 
@@ -68,7 +64,7 @@ function updateItemPrices() {
       .then(console.log('Item Price Data Updated Successfully'))
       .catch(err => console.log(err))
 
-  }, 180000);
+  }, 60000);
 }
 updateItemPrices();
 
