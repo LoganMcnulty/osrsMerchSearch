@@ -1,18 +1,9 @@
-// Timer variables
-var timeEl = $('.timer');
-var dateAtStart = moment().unix();
-timeEl.text(moment.unix(dateAtStart).format("MMM Do, YYYY, hh:mm:ss"));
-
 // Filter by Price vars
 var bidOrAsk = $('#bidOrAsk');
 var priceMin = $('#priceMin');
 var priceMax = $('#priceMax');
 var priceNumResults = $('#priceNumResults');
 var priceRangeSearchForm = $('#priceRangeSearchForm');
-
-// Item Search vars
-var itemSearchInput = $('#itemSearchInput');
-var itemSearchForm = $('#itemSearchForm');
 
 // View Stats vars
 var statsNumResults = $('#statsNumResults');
@@ -24,6 +15,10 @@ var topSpreadsForm = $('#topSpreadsForm');
 var resultsContainer = $('#resultsContainer')
 
 // Date and time stuff
+// Timer variables
+var timeEl = $('.timer');
+var dateAtStart = moment().unix();
+timeEl.text(moment.unix(dateAtStart).format("MMM Do, YYYY, hh:mm:ss"));
 $(function () {$('#projectDate').datepicker({changeMonth: true,changeYear: true,});});
 function setTime() {
   var timerInterval = setInterval(function() {
@@ -35,12 +30,24 @@ setTime();
 
 // Pull Items from the DB in order to populate autocomplete
 const pullDBItems = () => {
+
+  let searchForAnItem = `<input id="itemSearchInput" class="form-control basicAutoComplete" type="search" aria-label="Search" autocomplete="off" placeholder="Search For an Item"/>`
+
+  let searchButton = `<button id="submitItemSearch" type="submit" class="btn text-dark ml-2" style="background:gold; border:white"> Submit <i class="fas fa-search ml-1"></i></button>`
+
+  let pullingItems = `<div id="loading"><img id="loading-image" src="../Images/loading.gif" style="width:10%" alt="Loading..." /></div>`
+  $('#itemSearchForm').append(pullingItems)
+
   let requests = [fetch('/api/items').catch(err => console.log(err))]
   // Promise.all waits until all jobs are resolved
     Promise.all(requests)
     .then(responses => responses)
     .then(responses => Promise.all(responses.map(r => r.json())))
     .then(data => {
+      $('#itemSearchForm').empty()
+      $('#itemSearchForm').append(searchForAnItem)
+      $('#itemSearchForm').append(searchButton)
+
       console.log("Autofill completed")
     // Search Item Autocomplete
       $('.basicAutoComplete').autocomplete({
@@ -48,6 +55,30 @@ const pullDBItems = () => {
           var results = $.ui.autocomplete.filter(data[0], request.term);
           response(results.slice(0, 10));
       }})
+
+    // Item Search vars
+    var itemSearchInput = $('#itemSearchInput');
+    var itemSearchForm = $('#itemSearchForm');
+
+    // search item form submit
+      var handleItemFormSubmit = function (event) {
+        event.preventDefault();
+        let search = itemSearchInput.val()
+        console.log("Searching For: " + search)
+        let requests = [fetch('/api/items/' + search).catch(err => console.log(err))]
+        // Promise.all waits until all jobs are resolved
+          Promise.all(requests)
+          .then(responses => responses)
+          .then(responses => Promise.all(responses.map(r => r.json())))
+          .then(data => {
+            console.log("Item Info Retrieved")
+            displayItemCard(cleanMultiItemData(data))
+            listenSave()
+          })
+        itemSearchForm.trigger('reset')
+
+        };
+      itemSearchForm.on('submit',handleItemFormSubmit);
 })
 }
 pullDBItems()
@@ -68,7 +99,7 @@ var handleStatsFormSubmit = function (event) {
 
   if(!search.numResults){
     console.log("Default results to 100")
-    search.numResults = 100
+    search.numResults = 50
   }
 
   if (search.statType === 'Bid less Ask'){
@@ -153,24 +184,7 @@ var handleStatsFormSubmit = function (event) {
   };
   topSpreadsForm.on('submit',handleStatsFormSubmit);
 
-// search item form submit
-var handleItemFormSubmit = function (event) {
-  event.preventDefault();
-  let search = itemSearchInput.val()
-  console.log("Searching For: " + search)
-  let requests = [fetch('/api/items/' + search).catch(err => console.log(err))]
-  // Promise.all waits until all jobs are resolved
-    Promise.all(requests)
-    .then(responses => responses)
-    .then(responses => Promise.all(responses.map(r => r.json())))
-    .then(data => {
-      console.log("Item Info Retrieved")
-      displayItemCard(cleanMultiItemData(data))
-    })
-  itemSearchForm.trigger('reset')
 
-  };
-itemSearchForm.on('submit',handleItemFormSubmit);
 
 // ensure data returned is clean
 function cleanMultiItemData(data){
@@ -214,7 +228,10 @@ function displayItemCard(itemData){
       ,
     
     // WIki URL, buy limit
-      `<div class='d-flex flex-row justify-content-around align-items-center'><a target=_blank href=${itemData.stats.wiki_url}>Wiki URL</a><h6 class='text text-dark'>Buy Limit: ${numberWithCommas(itemData.stats.buy_limit)}</h6></div>`,
+      `<div class='d-flex flex-row justify-content-around align-items-center'><a target=_blank href=${itemData.stats.wiki_url}>Wiki URL</a><h6 class='text text-dark'>Buy Limit: ${numberWithCommas(itemData.stats.buy_limit)}</h6><button class='btn btn-lg btn-info saveItemButton' uniqueID="${itemData.uniqueID}"><i class='fas fa-save'></i></button></div>`,
+
+      // Save Item Button
+      // ``
     
     ]
   }
@@ -250,8 +267,8 @@ var handlePriceFormSubmit = function (event) {
   console.log(search)
 
   if(!search.numResults){
-    console.log("Default results to 100")
-    search.numResults = 100
+    console.log("Default results to 50")
+    search.numResults = 50
   }
 
   let urlPriceStats = '/api/priceRange/' + search.bidOrAsk + '/' + search.numResults + '/' + search.priceMin + '/' + search.priceMax
@@ -385,8 +402,7 @@ var userItems = []
 
 const checkSavedItems = () => {
   var storedItems = JSON.parse(localStorage.getItem("OSRS_Merch"));
-  console.log(storedItems)
-  console.log(`User Items from local storage: ${storedItems}`)
+  console.log(`Locally Stored Items: ${storedItems}`)
   try{
     if (storedItems.length > 0) {
       userItems = storedItems;
@@ -399,6 +415,8 @@ const checkSavedItems = () => {
           console.log("User saved item info retrieved from MongoDB")
           console.log(data)
           renderStoredItems(data)
+
+          // $('.saveItemButton').attr('uniqueID')
         })
     }
     else{
@@ -412,15 +430,33 @@ const checkSavedItems = () => {
 }
 checkSavedItems()
 
+const tempAlert = (msg,duration) =>
+{
+console.log('make a div')
+var el = $("<p>").addClass('text text-dark bg-light').attr('style','position:fixed;top:0%;left:0%; font-size:150%').attr('id','itemSaveModal').html(msg);
+setTimeout(function(){
+  $("#itemSaveModal").remove();
+},duration);
+$('body').append(el);
+}
+
 const listenSave = () => {
   $('.saveItemButton').on('click', function(e){
     e.preventDefault()
     var saveItem = $(this).attr('uniqueid')
-    console.log('Saveing item ' + saveItem)
-    userItems.push(saveItem);
-    localStorage.setItem("OSRS_Merch", JSON.stringify(userItems));
-    checkSavedItems()
-  })
+
+    if (userItems.includes(saveItem)){
+      tempAlert("Item Already Saved", 600)
+      return
+    }
+    else{
+      console.log('Saveing item ' + saveItem)
+      userItems.push(saveItem);
+      localStorage.setItem("OSRS_Merch", JSON.stringify(userItems));
+      checkSavedItems()
+    tempAlert("Item Saved", 600)
+    }
+    })
 }
 
 const listenClearSaved = () => {
@@ -479,3 +515,4 @@ const renderStoredItems = (data) => {
   listenRemoveOne()
   listenClearSaved()
 }
+

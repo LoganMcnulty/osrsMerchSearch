@@ -43,6 +43,7 @@ module.exports = (app) => {
 
     var statLTEGTEParam = {}
     statLTEGTEParam[statParam] = {$lt: parseFloat(maxSpread)}
+    statLTEGTEParam['BidAskRatio'] = {$gt: .1}
     // console.log(statLTEGTEParam)
 
     db.Item.aggregate([
