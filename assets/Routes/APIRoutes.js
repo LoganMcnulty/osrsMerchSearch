@@ -153,7 +153,22 @@ module.exports = (app) => {
     })
 
   app.get('/api/items', (req,res) => {
-    const dbItems = db.Item.find({}, function(err, docs){return docs});
+    
+    const dbItems = db.Item.aggregate([
+      {$match: {
+          "stats.highTime": {$ne: null},
+          "stats.low": {$nin: [null, 0]},
+          "stats.high": {$nin: [null, 0]},
+          "stats.buy_limit": {$ne:null},
+          "stats.highalch": {$ne:null}
+          }},
+      {$project:{
+           _id:1,
+          name:1,
+      }},
+  ])
+    .then(docs => docs)
+
     Promise.all([dbItems])
     .then(data => data[0].map(d => d.name))
     .then(data => {
