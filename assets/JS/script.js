@@ -387,22 +387,28 @@ const checkSavedItems = () => {
   var storedItems = JSON.parse(localStorage.getItem("OSRS_Merch"));
   console.log(storedItems)
   console.log(`User Items from local storage: ${storedItems}`)
-  if (storedItems.length > 0) {
-    userItems = storedItems;
-    let requests = [fetch('/api/uniqueids/' + userItems).catch(err => console.log(err))]
-    // Promise.all waits until all jobs are resolved
-      Promise.all(requests)
-      .then(responses => responses)
-      .then(responses => Promise.all(responses.map(r => r.json())))
-      .then(data => {
-        console.log("User saved item info retrieved from MongoDB")
-        console.log(data)
-        renderStoredItems(data)
-      })
+  try{
+    if (storedItems.length > 0) {
+      userItems = storedItems;
+      let requests = [fetch('/api/uniqueids/' + userItems).catch(err => console.log(err))]
+      // Promise.all waits until all jobs are resolved
+        Promise.all(requests)
+        .then(responses => responses)
+        .then(responses => Promise.all(responses.map(r => r.json())))
+        .then(data => {
+          console.log("User saved item info retrieved from MongoDB")
+          console.log(data)
+          renderStoredItems(data)
+        })
+    }
+    else{
+      $('#savedItemsTable').html(`<p class='text mt-2'>Add items to your watch list</p>`)
+    }
   }
-  else{
+  catch{
     $('#savedItemsTable').html(`<p class='text mt-2'>Add items to your watch list</p>`)
   }
+
 }
 checkSavedItems()
 
