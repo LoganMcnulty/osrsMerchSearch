@@ -35,7 +35,7 @@ const pullDBItems = () => {
 
   let searchButton = `<button id="submitItemSearch" type="submit" class="btn text-dark ml-2" style="background:gold; border:white"> Submit <i class="fas fa-search ml-1"></i></button>`
 
-  let pullingItems = `<div id="loading"><img id="loading-image" src="../Images/loading.gif" style="width:10%" alt="Loading..." /></div>`
+  let pullingItems = `<div id="loading">Loading Item Search... <br><img id="loading-image" src="../Images/loading.gif" style="width:10%" alt="Loading..." /></div>`
   $('#itemSearchForm').append(pullingItems)
 
   let requests = [fetch('/api/items').catch(err => console.log(err))]
