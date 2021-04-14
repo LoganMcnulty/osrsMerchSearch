@@ -58,7 +58,7 @@ app.listen(PORT, () => console.log(`Listening on localhost:${PORT}`));
 function updateItemPrices() {
   const itemInterval = setInterval(function() {
     console.log('Fetching Item Prices')
-    let requests = [fetch('http://localhost:8080/api/updateItemPrices').catch(err => console.log(err))]
+    let requests = [fetch(provess.env.baseURI || `http://localhost:${PORT}` + '/api/updateItemPrices').catch(err => console.log(err))]
     // Promise.all waits until all jobs are resolved
       Promise.all(requests)
       .then(console.log('Item Price Data Updated Successfully'))
